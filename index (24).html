@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jonathan Davis — One-page Career Site</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/lucide-static/font/lucide.css" rel="stylesheet" />
+    <!-- Added custom CSS for animations, dark mode, and glassmorphism effects -->
+    <style>
+      /* Dark mode variables */
+      :root {
+        --bg-primary: #f8fafc;
+        --bg-secondary: #ffffff;
+        --text-primary: #0f172a;
+        --text-secondary: #64748b;
+        --border-color: #e2e8f0;
+      }
+      
+      [data-theme="dark"] {
+        --bg-primary: #0f172a;
+        --bg-secondary: #1e293b;
+        --text-primary: #f8fafc;
+        --text-secondary: #94a3b8;
+        --border-color: #334155;
+      }
+      
+      /* Scroll animations */
+      .fade-in {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.8s ease-out;
+      }
+      
+      .fade-in.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      
+      /* Glassmorphism effects */
+      .glass {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+      
+      [data-theme="dark"] .glass {
+        background: rgba(30, 41, 59, 0.3);
+        border: 1px solid rgba(148, 163, 184, 0.2);
+      }
+      
+      /* Floating animation for hero elements */
+      .float {
+        animation: float 6s ease-in-out infinite;
+      }
+      
+      .float-delayed {
+        animation: float 6s ease-in-out infinite;
+        animation-delay: -3s;
+      }
+      
+      @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-20px); }
+      }
+      
+      /* Enhanced hover effects */
+      .hover-lift {
+        transition: all 0.3s ease;
+      }
+      
+      .hover-lift:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      }
+      
+      /* Skills progress animation */
+      .skill-bar {
+        width: 0%;
+        transition: width 2s ease-out;
+      }
+      
+      .skill-bar.animate {
+        width: var(--skill-width);
+      }
+      
+      /* Theme transition */
+      * {
+        transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen text-slate-900 bg-gradient-to-b from-slate-50 to-white" style="background: var(--bg-primary); color: var(--text-primary);">
+    <!-- Header -->
+    <header class="sticky top-0 z-40 border-b border-slate-200/70 bg-white/80 backdrop-blur" style="border-color: var(--border-color); background: rgba(255, 255, 255, 0.8);">
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="h-16 flex items-center justify-between">
+          <a href="#top" class="font-extrabold tracking-tight text-slate-900" style="color: var(--text-primary);">Jonathan Davis</a>
+          <nav class="hidden md:flex items-center gap-6 text-sm">
+            <!-- Updated navigation colors for dark mode support -->
+            <a href="#about" class="hover:text-slate-900 text-slate-600 transition-colors duration-200 flex items-center gap-1" style="color: var(--text-secondary);">
+              <i class="lucide lucide-user w-4 h-4"></i> About
+            </a>
+            <a href="#highlights" class="hover:text-slate-900 text-slate-600 transition-colors duration-200 flex items-center gap-1" style="color: var(--text-secondary);">
+              <i class="lucide lucide-star w-4 h-4"></i> Highlights
+            </a>
+            <a href="#skills" class="hover:text-slate-900 text-slate-600 transition-colors duration-200 flex items-center gap-1" style="color: var(--text-secondary);">
+              <i class="lucide lucide-brain w-4 h-4"></i> Skills
+            </a>
+            <a href="#projects" class="hover:text-slate-900 text-slate-600 transition-colors duration-200 flex items-center gap-1" style="color: var(--text-secondary);">
+              <i class="lucide lucide-rocket w-4 h-4"></i> Initiatives
+            </a>
+            <a href="#learning" class="hover:text-slate-900 text-slate-600 transition-colors duration-200 flex items-center gap-1" style="color: var(--text-secondary);">
+              <i class="lucide lucide-graduation-cap w-4 h-4"></i> What I'm Studying
+            </a>
+            <a href="#certifications" class="hover:text-slate-900 text-slate-600 transition-colors duration-200 flex items-center gap-1" style="color: var(--text-secondary);">
+              <i class="lucide lucide-certificate w-4 h-4"></i> Certifications
+            </a>
+            <a href="#contact" class="hover:text-slate-900 text-slate-600 transition-colors duration-200 flex items-center gap-1" style="color: var(--text-secondary);">
+              <i class="lucide lucide-mail w-4 h-4"></i> Contact
+            </a>
+          </nav>
+          <div class="flex items-center gap-3">
+            <!-- Added dark/light mode toggle button -->
+            <button id="theme-toggle" class="p-2 rounded-lg hover:bg-slate-100 transition-colors duration-200" title="Toggle theme">
+              <i class="lucide lucide-sun w-5 h-5" id="theme-icon"></i>
+            </button>
+            <a href="#contact" class="md:inline-flex hidden items-center gap-2 rounded-xl bg-slate-900 text-white px-4 py-2 text-sm font-semibold shadow-sm hover:bg-black transition-colors duration-200">
+              <i class="lucide lucide-send w-4 h-4"></i> Contact
+            </a>
+            <button id="mobile-menu-button" class="md:hidden flex items-center justify-center w-10 h-10 rounded-lg hover:bg-slate-100 transition-colors duration-200">
+              <div class="w-6 h-6 flex flex-col justify-center items-center">
+                <span class="block w-5 h-0.5 bg-slate-900 transition-all duration-300 ease-in-out" id="line1" style="background: var(--text-primary);"></span>
+                <span class="block w-5 h-0.5 bg-slate-900 mt-1 transition-all duration-300 ease-in-out" id="line2" style="background: var(--text-primary);"></span>
+                <span class="block w-5 h-0.5 bg-slate-900 mt-1 transition-all duration-300 ease-in-out" id="line3" style="background: var(--text-primary);"></span>
+              </div>
+            </button>
+          </div>
+        </div>
+        <div id="mobile-menu" class="md:hidden overflow-hidden transition-all duration-300 ease-in-out max-h-0">
+          <nav class="py-4 space-y-2">
+            <a href="#about" class="block px-4 py-2 text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-all duration-200" style="color: var(--text-secondary);">About</a>
+            <a href="#highlights" class="block px-4 py-2 text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-all duration-200" style="color: var(--text-secondary);">Highlights</a>
+            <a href="#skills" class="block px-4 py-2 text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-all duration-200" style="color: var(--text-secondary);">Skills</a>
+            <a href="#projects" class="block px-4 py-2 text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-all duration-200" style="color: var(--text-secondary);">Initiatives</a>
+            <a href="#learning" class="block px-4 py-2 text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-all duration-200" style="color: var(--text-secondary);">What I'm Studying</a>
+            <a href="#certifications" class="block px-4 py-2 text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-all duration-200" style="color: var(--text-secondary);">Certifications</a>
+            <a href="#contact" class="block px-4 py-2 text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-all duration-200" style="color: var(--text-secondary);">Contact</a>
+            <div class="px-4 pt-2">
+              <a href="#contact" class="inline-flex items-center gap-2 rounded-xl bg-slate-900 text-white px-4 py-2 text-sm font-semibold shadow-sm hover:bg-black transition-colors duration-200 w-full justify-center">
+                <i class="lucide lucide-send w-4 h-4"></i> Contact
+              </a>
+            </div>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero -->
+    <section id="top" class="relative overflow-hidden">
+      <!-- Added floating background elements for visual interest -->
+      <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute top-20 left-10 w-32 h-32 bg-emerald-200/20 rounded-full blur-xl float"></div>
+        <div class="absolute top-40 right-20 w-24 h-24 bg-yellow-200/20 rounded-full blur-xl float-delayed"></div>
+        <div class="absolute bottom-20 left-1/3 w-40 h-40 bg-blue-200/20 rounded-full blur-xl float"></div>
+      </div>
+      <div class="max-w-6xl mx-auto px-6 pt-16 pb-10 relative">
+        <div class="grid md:grid-cols-2 gap-10 items-center">
+          <div class="fade-in">
+            <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight my-8" style="color: var(--text-primary);">
+              Relationship-Driven <span class="bg-yellow-200 px-2 rounded">Sales Pro</span><br />
+              pivoting into <span class="bg-emerald-200 px-2 rounded">Physical Commodity Trading</span>
+            </h1>
+            <p class="mt-4 text-slate-600 max-w-2xl" style="color: var(--text-secondary);">
+              I build trust, move quickly, and solve real-world problems. I'm focused on ag & forestry supply chains in Washington—combining a commercial mindset with growing logistics and risk skills.
+            </p>
+            <div class="mt-6 flex flex-wrap gap-3">
+              <!-- Enhanced badges with glassmorphism effects -->
+              <span class="inline-flex items-center gap-2 rounded-full border px-3 py-1 text-sm glass"><i class="lucide lucide-map-pin w-4 h-4"></i> Based in TN → visiting WA</span>
+              <span class="inline-flex items-center gap-2 rounded-full border px-3 py-1 text-sm glass"><i class="lucide lucide-factory w-4 h-4"></i> Ag/Forestry Focus</span>
+              <span class="inline-flex items-center gap-2 rounded-full border px-3 py-1 text-sm glass"><i class="lucide lucide-ship w-4 h-4"></i> Incoterms • B/L • Laytime</span>
+              <span class="inline-flex items-center gap-2 rounded-full border px-3 py-1 text-sm glass"><i class="lucide lucide-boxes w-4 h-4"></i> Ops & Logistics Ready</span>
+            </div>
+            <div class="mt-8 flex flex-wrap gap-3">
+              <a href="#highlights" class="inline-flex items-center gap-2 rounded-xl bg-slate-900 text-white px-4 py-3 text-sm font-semibold shadow-sm hover:bg-black hover-lift">
+                View Highlights <i class="lucide lucide-arrow-right w-4 h-4"></i>
+              </a>
+              <a href="#fastfacts" class="inline-flex items-center gap-2 rounded-xl border px-4 py-3 text-sm font-semibold hover:bg-white hover-lift" style="border-color: var(--border-color);">Fast Facts</a>
+              <a href="https://linkedin.com/in/jonathandavis" target="_blank" class="inline-flex items-center gap-2 rounded-xl border px-4 py-3 text-sm font-semibold hover:bg-white hover-lift" style="border-color: var(--border-color);">
+                <i class="lucide lucide-link w-4 h-4"></i> LinkedIn
+              </a>
+              <a href="/Jonathan_Davis_Resume.pdf" target="_blank" class="inline-flex items-center gap-2 rounded-xl bg-emerald-600 text-white px-4 py-3 text-sm font-semibold shadow-sm hover:bg-emerald-700 hover-lift">
+                <i class="lucide lucide-file-down w-4 h-4"></i> Download Résumé (PDF)
+              </a>
+            </div>
+          </div>
+          <div class="md:justify-self-end fade-in">
+            <div class="rounded-2xl border bg-white p-6 shadow-sm max-w-md hover-lift" style="background: var(--bg-secondary); border-color: var(--border-color);">
+              <h3 class="font-semibold text-lg flex items-center gap-2" style="color: var(--text-primary);"><i class="lucide lucide-briefcase w-5 h-5"></i> Target Roles</h3>
+              <ul class="mt-3 text-slate-700 list-disc pl-5 space-y-1" style="color: var(--text-secondary);">
+                <li>Logistics / Operations Coordinator</li>
+                <li>Trader Assistant / Desk Support</li>
+                <li>Export Documentation (B/L, L/C, SOF)</li>
+              </ul>
+              <div class="mt-4 grid grid-cols-2 gap-3 text-sm">
+                <div class="rounded-xl border p-3 hover-lift" style="border-color: var(--border-color);">FOB • CIF • CFR</div>
+                <div class="rounded-xl border p-3 hover-lift" style="border-color: var(--border-color);">Letters of Credit</div>
+                <div class="rounded-xl border p-3 hover-lift" style="border-color: var(--border-color);">Laytime & Demurrage</div>
+                <div class="rounded-xl border p-3 hover-lift" style="border-color: var(--border-color);">Bulk & Container Flow</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section id="about" class="py-20 scroll-mt-24 fade-in">
+      <div class="max-w-6xl mx-auto px-6">
+        <h2 class="text-3xl md:text-4xl font-bold tracking-tight" style="color: var(--text-primary);">About Jonathan</h2>
+        <p class="mt-2 text-slate-600 max-w-3xl" style="color: var(--text-secondary);">Sales & marketing background with a bias for action. Now applying that commercial edge to physical commodities.</p>
+        <div class="mt-8 grid md:grid-cols-3 gap-6">
+          <div class="md:col-span-2 rounded-2xl border p-6 bg-white shadow-sm hover-lift" style="background: var(--bg-secondary); border-color: var(--border-color);">
+            <p class="text-slate-700" style="color: var(--text-secondary);">
+              I've led revenue growth, built partnerships, and solved customer problems across multiple ventures. My edge is simple: I create trust fast and keep projects moving. I'm currently targeting Washington's ag & forestry trade—where relationships, logistics, and timing matter.
+            </p>
+            <ul class="mt-4 list-disc pl-5 text-slate-700 space-y-2" style="color: var(--text-secondary);">
+              <li>Negotiation & client relationship management</li>
+              <li>Market research & practical problem-solving</li>
+              <li>Documentation flow: CI, PL, B/L, L/C basics</li>
+              <li>Comfort with deadline pressure and changing plans</li>
+            </ul>
+          </div>
+          <div class="rounded-2xl border p-6 bg-white shadow-sm hover-lift" style="background: var(--bg-secondary); border-color: var(--border-color);">
+            <h4 class="font-semibold" style="color: var(--text-primary);">Fast Credentials</h4>
+            <ul class="mt-3 text-sm text-slate-700 space-y-2" style="color: var(--text-secondary);">
+              <li class="flex items-center gap-2"><i class="lucide lucide-check-circle text-emerald-600 w-4 h-4"></i> Incoterms® 2020 (in progress)</li>
+              <li class="flex items-center gap-2"><i class="lucide lucide-check-circle text-emerald-600 w-4 h-4"></i> Trade Finance basics (UCP600)</li>
+              <li class="flex items-center gap-2"><i class="lucide lucide-check-circle text-emerald-600 w-4 h-4"></i> Logistics & Ops coursework</li>
+            </ul>
+            <a href="#contact" class="mt-4 inline-flex items-center gap-2 text-slate-900 font-semibold" style="color: var(--text-primary);">Request my 1-page resume <i class="lucide lucide-file-down w-4 h-4"></i></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Highlights -->
+    <section id="highlights" class="py-20 scroll-mt-24 fade-in">
+      <div class="max-w-6xl mx-auto px-6">
+        <h2 class="text-3xl md:text-4xl font-bold tracking-tight" style="color: var(--text-primary);">Commercial Highlights</h2>
+        <p class="mt-2 text-slate-600 max-w-3xl" style="color: var(--text-secondary);">A few wins that translate directly into value on a trading desk.</p>
+        <div class="mt-8 grid md:grid-cols-3 gap-6">
+          <div class="rounded-2xl border p-6 bg-white shadow-sm hover-lift" style="background: var(--bg-secondary); border-color: var(--border-color);">
+            <h4 class="font-semibold flex items-center gap-2" style="color: var(--text-primary);">
+              <i class="lucide lucide-trending-up w-5 h-5 text-emerald-600"></i>
+              Revenue Growth
+            </h4>
+            <p class="mt-2 text-slate-700" style="color: var(--text-secondary);">Grew annual revenue +27% by expanding high-value accounts in a competitive market.</p>
+          </div>
+          <div class="rounded-2xl border p-6 bg-white shadow-sm hover-lift" style="background: var(--bg-secondary); border-color: var(--border-color);">
+            <h4 class="font-semibold flex items-center gap-2" style="color: var(--text-primary);">
+              <i class="lucide lucide-clock w-5 h-5 text-blue-600"></i>
+              Faster Cycles
+            </h4>
+            <p class="mt-2 text-slate-700" style="color: var(--text-secondary);">Negotiated and closed deals across industries, shortening sales cycles up to 40%.</p>
+          </div>
+          <div class="rounded-2xl border p-6 bg-white shadow-sm hover-lift" style="background: var(--bg-secondary); border-color: var(--border-color);">
+            <h4 class="font-semibold flex items-center gap-2" style="color: var(--text-primary);">
+              <i class="lucide lucide-target w-5 h-5 text-purple-600"></i>
+              Marketing ROI
+            </h4>
+            <p class="mt-2 text-slate-700" style="color: var(--text-secondary);">Built campaigns that delivered double-digit ROI and repeat business.</p>
+          </div>
+        </div>
+        <div id="fastfacts" class="mt-8 rounded-2xl border p-6 bg-white shadow-sm hover-lift" style="background: var(--bg-secondary); border-color: var(--border-color);">
+          <h4 class="font-semibold flex items-center gap-2" style="color: var(--text-primary);">
+            <i class="lucide lucide-zap w-5 h-5 text-yellow-600"></i>
+            Fast Facts
+          </h4>
+          <ul class="mt-3 grid md:grid-cols-2 gap-3 text-slate-700" style="color: var(--text-secondary);">
+            <li>Ag & Forestry focus (PNW supply chains)</li>
+            <li>Docs: CI • PL • B/L • L/C (working level)</li>
+            <li>Incoterms: FOB • CIF • CFR • DAP</li>
+            <li>Ops: cut-offs, bookings, VGM, customs</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Added new interactive skills section with animated progress bars -->
+    <section id="skills" class="py-20 scroll-mt-24 fade-in">
+      <div class="max-w-6xl mx-auto px-6">
+        <h2 class="text-3xl md:text-4xl font-bold tracking-tight" style="color: var(--text-primary);">Core Skills & Expertise</h2>
+        <p class="mt-2 text-slate-600 max-w-3xl" style="color: var(--text-secondary);">Technical and commercial capabilities that drive results in commodity trading.</p>
+        
+        <div class="mt-8 grid md:grid-cols-2 gap-8">
+          <!-- Trading & Commercial Skills -->
+          <div class="rounded-2xl border p-8 bg-white shadow-sm hover-lift glass" style="background: var(--bg-secondary); border-color: var(--border-color);">
+            <div class="flex items-center gap-3 mb-6">
+              <div class="p-2 rounded-xl bg-emerald-600">
+                <i class="lucide lucide-trending-up w-6 h-6 text-white"></i>
+              </div>
+              <h3 class="text-xl font-bold" style="color: var(--text-primary);">Trading & Commercial</h3>
+            </div>
+            <div class="space-y-6">
+              <div class="skill-item">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="font-medium" style="color: var(--text-primary);">Client Relationship Management</span>
+                  <span class="text-sm text-slate-500">95%</span>
+                </div>
+                <div class="w-full bg-slate-200 rounded-full h-2">
+                  <div class="skill-bar bg-emerald-600 h-2 rounded-full" style="--skill-width: 95%"></div>
+                </div>
+              </div>
+              <div class="skill-item">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="font-medium" style="color: var(--text-primary);">Negotiation & Deal Closing</span>
+                  <span class="text-sm text-slate-500">90%</span>
+                </div>
+                <div class="w-full bg-slate-200 rounded-full h-2">
+                  <div class="skill-bar bg-emerald-600 h-2 rounded-full" style="--skill-width: 90%"></div>
+                </div>
+              </div>
+              <div class="skill-item">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="font-medium" style="color: var(--text-primary);">Market Research & Analysis</span>
+                  <span class="text-sm text-slate-500">85%</span>
+                </div>
+                <div class="w-full bg-slate-200 rounded-full h-2">
+                  <div class="skill-bar bg-emerald-600 h-2 rounded-full" style="--skill-width: 85%"></div>
+                </div>
+              </div>
+              <div class="skill-item">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="font-medium" style="color: var(--text-primary);">Revenue Growth Strategies</span>
+                  <span class="text-sm text-slate-500">88%</span>
+                </div>
+                <div class="w-full bg-slate-200 rounded-full h-2">
+                  <div class="skill-bar bg-emerald-600 h-2 rounded-full" style="--skill-width: 88%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Logistics & Operations Skills -->
+          <div class="rounded-2xl border p-8 bg-white shadow-sm hover-lift glass" style="background: var(--bg-secondary); border-color: var(--border-color);">
+            <div class="flex items-center gap-3 mb-6">
+              <div class="p-2 rounded-xl bg-blue-600">
+                <i class="lucide lucide-ship w-6 h-6 text-white"></i>
+              </div>
+              <h3 class="text-xl font-bold" style="color: var(--text-primary);">Logistics & Operations</h3>
+            </div>
+            <div class="space-y-6">
+              <div class="skill-item">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="font-medium" style="color: var(--text-primary);">Incoterms & Trade Terms</span>
+                  <span class="text-sm text-slate-500">75%</span>
+                </div>
+                <div class="w-full bg-slate-200 rounded-full h-2">
+                  <div class="skill-bar bg-blue-600 h-2 rounded-full" style="--skill-width: 75%"></div>
+                </div>
+              </div>
+              <div class="skill-item">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="font-medium" style="color: var(--text-primary);">Documentation (B/L, L/C, CI)</span>
+                  <span class="text-sm text-slate-500">70%</span>
+                </div>
+                <div class="w-full bg-slate-200 rounded-full h-2">
+                  <div class="skill-bar bg-blue-600 h-2 rounded-full" style="--skill-width: 70%"></div>
+                </div>
+              </div>
+              <div class="skill-item">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="font-medium" style="color: var(--text-primary);">Supply Chain Coordination</span>
+                  <span class="text-sm text-slate-500">80%</span>
+                </div>
+                <div class="w-full bg-slate-200 rounded-full h-2">
+                  <div class="skill-bar bg-blue-600 h-2 rounded-full" style="--skill-width: 80%"></div>
+                </div>
+              </div>
+              <div class="skill-item">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="font-medium" style="color: var(--text-primary);">Risk Management Basics</span>
+                  <span class="text-sm text-slate-500">65%</span>
+                </div>
+                <div class="w-full bg-slate-200 rounded-full h-2">
+                  <div class="skill-bar bg-blue-600 h-2 rounded-full" style="--skill-width: 65%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Industry Focus Areas -->
+        <div class="mt-8 rounded-2xl border p-8 bg-white shadow-sm hover-lift glass" style="background: var(--bg-secondary); border-color: var(--border-color);">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="p-2 rounded-xl bg-purple-600">
+              <i class="lucide lucide-target w-6 h-6 text-white"></i>
+            </div>
+            <h3 class="text-xl font-bold" style="color: var(--text-primary);">Industry Focus Areas</h3>
+          </div>
+          <div class="grid md:grid-cols-4 gap-6">
+            <div class="text-center">
+              <div class="w-16 h-16 mx-auto mb-3 rounded-full bg-amber-100 flex items-center justify-center">
+                <i class="lucide lucide-wheat w-8 h-8 text-amber-600"></i>
+              </div>
+              <h4 class="font-semibold mb-1" style="color: var(--text-primary);">Agriculture</h4>
+              <p class="text-sm text-slate-600" style="color: var(--text-secondary);">Grains, specialty crops</p>
+            </div>
+            <div class="text-center">
+              <div class="w-16 h-16 mx-auto mb-3 rounded-full bg-green-100 flex items-center justify-center">
+                <i class="lucide lucide-trees w-8 h-8 text-green-600"></i>
+              </div>
+              <h4 class="font-semibold mb-1" style="color: var(--text-primary);">Forestry</h4>
+              <p class="text-sm text-slate-600" style="color: var(--text-secondary);">Lumber, wood products</p>
+            </div>
+            <div class="text-center">
+              <div class="w-16 h-16 mx-auto mb-3 rounded-full bg-blue-100 flex items-center justify-center">
+                <i class="lucide lucide-ship w-8 h-8 text-blue-600"></i>
+              </div>
+              <h4 class="font-semibold mb-1" style="color: var(--text-primary);">Logistics</h4>
+              <p class="text-sm text-slate-600" style="color: var(--text-secondary);">Bulk & container shipping</p>
+            </div>
+            <div class="text-center">
+              <div class="w-16 h-16 mx-auto mb-3 rounded-full bg-emerald-100 flex items-center justify-center">
+                <i class="lucide lucide-recycle w-8 h-8 text-emerald-600"></i>
+              </div>
+              <h4 class="font-semibold mb-1" style="color: var(--text-primary);">Recycling</h4>
+              <p class="text-sm text-slate-600" style="color: var(--text-secondary);">Waste paper, metals</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projects / Initiatives -->
+    <section id="projects" class="py-20 scroll-mt-24 fade-in">
+      <div class="max-w-6xl mx-auto px-6">
+        <h2 class="text-3xl md:text-4xl font-bold tracking-tight" style="color: var(--text-primary);">Current Initiatives</h2>
+        <p class="mt-2 text-slate-600 max-w-3xl" style="color: var(--text-secondary);">What I’m building and learning right now.</p>
+        <div class="mt-8 grid md:grid-cols-3 gap-6">
+          <div class="rounded-2xl border p-6 bg-white shadow-sm hover-lift" style="background: var(--bg-secondary); border-color: var(--border-color);">
+            <h4 class="font-semibold flex items-center gap-2" style="color: var(--text-primary);">
+              <i class="lucide lucide-users w-5 h-5 text-blue-600"></i>
+              Washington Networking Sprint
+            </h4>
+            <p class="mt-2 text-slate-700" style="color: var(--text-secondary);">Two-week on-site push to meet exporters, recyclers, timber and ag traders; targeting logistics/ops and junior desk roles.</p>
+          </div>
+          <div class="rounded-2xl border p-6 bg-white shadow-sm hover-lift" style="background: var(--bg-secondary); border-color: var(--border-color);">
+            <h4 class="font-semibold flex items-center gap-2" style="color: var(--text-primary);">
+              <i class="lucide lucide-cog w-5 h-5 text-emerald-600"></i>
+              Logistics Skill Sprint
+            </h4>
+            <p class="mt-2 text-slate-700" style="color: var(--text-secondary);">Focused study on Incoterms, letters of credit, and demurrage risk with practical doc-pack drills.</p>
+          </div>
+          <div class="rounded-2xl border p-6 bg-white shadow-sm hover-lift" style="background: var(--bg-secondary); border-color: var(--border-color);">
+            <h4 class="font-semibold flex items-center gap-2" style="color: var(--text-primary);">
+              <i class="lucide lucide-notebook-pen w-5 h-5 text-purple-600"></i>
+              Reading & Market Notes
+            </h4>
+            <p class="mt-2 text-slate-700" style="color: var(--text-secondary);">Studying forestry & ag trade dynamics; keeping short, practical notes I can share in interviews.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Learning -->
+    <section id="learning" class="py-20 scroll-mt-24 fade-in">
+      <div class="max-w-6xl mx-auto px-6">
+        <h2 class="text-3xl md:text-4xl font-bold tracking-tight" style="color: var(--text-primary);">What I'm Studying</h2>
+        <p class="mt-2 text-slate-600 max-w-3xl" style="color: var(--text-secondary);">Live list of courses & resources I'm using to ramp fast.</p>
+        
+        <!-- Enhanced learning section with better visual design, progress indicators, and improved layout -->
+        <div class="mt-8 space-y-8">
+          <!-- Current Courses Section -->
+          <div class="rounded-2xl border-2 border-emerald-200 bg-gradient-to-br from-emerald-50 to-white p-8 shadow-lg">
+            <div class="flex items-center gap-3 mb-6">
+              <div class="p-2 rounded-xl bg-emerald-600">
+                <i class="lucide lucide-graduation-cap w-6 h-6 text-white"></i>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold text-slate-900" style="color: var(--text-primary);">Active Courses</h3>
+                <p class="text-slate-600 text-sm" style="color: var(--text-secondary);">Currently enrolled and progressing</p>
+              </div>
+            </div>
+            <div class="grid md:grid-cols-2 gap-6">
+              <div class="bg-white rounded-xl p-6 border border-emerald-100 shadow-sm hover-lift" style="background: var(--bg-secondary); border-color: var(--border-color);">
+                <div class="flex items-start justify-between mb-3">
+                  <div class="flex items-center gap-2">
+                    <i class="lucide lucide-truck w-5 h-5 text-emerald-600"></i>
+                    <h4 class="font-semibold text-slate-900" style="color: var(--text-primary);">ICC Incoterms® 2020 Certificate</h4>
+                  </div>
+                  <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs font-medium rounded-full">In Progress</span>
+                </div>
+                <p class="text-slate-600 text-sm mb-3" style="color: var(--text-secondary);">Mastering international trade terms and risk allocation</p>
+                <div class="w-full bg-slate-200 rounded-full h-2">
+                  <div class="bg-emerald-600 h-2 rounded-full" style="width: 75%"></div>
+                </div>
+                <p class="text-xs text-slate-500 mt-1">75% Complete</p>
+              </div>
+              
+              <div class="bg-white rounded-xl p-6 border border-emerald-100 shadow-sm hover-lift" style="background: var(--bg-secondary); border-color: var(--border-color);">
+                <div class="flex items-start justify-between mb-3">
+                  <div class="flex items-center gap-2">
+                    <i class="lucide lucide-trending-up w-5 h-5 text-blue-600"></i>
+                    <h4 class="font-semibold text-slate-900" style="color: var(--text-primary);">CME Group — Position & Risk Management</h4>
+                  </div>
+                  <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">Active</span>
+                </div>
+                <p class="text-slate-600 text-sm mb-3" style="color: var(--text-secondary);">Understanding futures markets and risk mitigation</p>
+                <div class="w-full bg-slate-200 rounded-full h-2">
+                  <div class="bg-blue-600 h-2 rounded-full" style="width: 60%"></div>
+                </div>
+                <p class="text-xs text-slate-500 mt-1">60% Complete</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Reading & Resources Section -->
+          <div class="rounded-2xl border-2 border-purple-200 bg-gradient-to-br from-purple-50 to-white p-8 shadow-lg">
+            <div class="flex items-center gap-3 mb-6">
+              <div class="p-2 rounded-xl bg-purple-600">
+                <i class="lucide lucide-book-open w-6 h-6 text-white"></i>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold text-slate-900" style="color: var(--text-primary);">Reading & Research</h3>
+                <p class="text-slate-600 text-sm" style="color: var(--text-secondary);">Books, guides, and market intelligence</p>
+              </div>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div class="bg-white rounded-xl p-4 border border-purple-100 shadow-sm hover-lift transition-shadow duration-200" style="background: var(--bg-secondary); border-color: var(--border-color);">
+                <div class="flex items-center gap-2 mb-2">
+                  <i class="lucide lucide-wheat w-4 h-4 text-amber-600"></i>
+                  <span class="px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">Reading</span>
+                </div>
+                <h5 class="font-semibold text-sm text-slate-900 mb-1" style="color: var(--text-primary);">Mastering the Grain Markets</h5>
+                <p class="text-xs text-slate-600" style="color: var(--text-secondary);">by Elaine Kub</p>
+              </div>
+              
+              <div class="bg-white rounded-xl p-4 border border-purple-100 shadow-sm hover-lift transition-shadow duration-200" style="background: var(--bg-secondary); border-color: var(--border-color);">
+                <div class="flex items-center gap-2 mb-2">
+                  <i class="lucide lucide-coffee w-4 h-4 text-amber-800"></i>
+                  <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">Weekly</span>
+                </div>
+                <h5 class="font-semibold text-sm text-slate-900 mb-1" style="color: var(--text-primary);">Commodity Conversations</h5>
+                <p class="text-xs text-slate-600" style="color: var(--text-secondary);">Kingsman SA</p>
+              </div>
+              
+              <div class="bg-white rounded-xl p-4 border border-purple-100 shadow-sm hover-lift transition-shadow duration-200" style="background: var(--bg-secondary); border-color: var(--border-color);">
+                <div class="flex items-center gap-2 mb-2">
+                  <i class="lucide lucide-trees w-4 h-4 text-green-600"></i>
+                  <span class="px-2 py-1 bg-purple-100 text-purple-800 text-xs font-medium rounded-full">Reference</span>
+                </div>
+                <h5 class="font-semibold text-sm text-slate-900 mb-1" style="color: var(--text-primary);">CME Ag & Lumber Guides</h5>
+                <p class="text-xs text-slate-600" style="color: var(--text-secondary);">Market fundamentals</p>
+              </div>
+              
+              <div class="bg-white rounded-xl p-4 border border-purple-100 shadow-sm hover-lift transition-shadow duration-200" style="background: var(--bg-secondary); border-color: var(--border-color);">
+                <div class="flex items-center gap-2 mb-2">
+                  <i class="lucide lucide-globe w-4 h-4 text-blue-600"></i>
+                  <span class="px-2 py-1 bg-orange-100 text-orange-800 text-xs font-medium rounded-full">Monthly</span>
+                </div>
+                <h5 class="font-semibold text-sm text-slate-900 mb-1" style="color: var(--text-primary);">FAO Market Outlooks</h5>
+                <p class="text-xs text-slate-600" style="color: var(--text-secondary);">Global trends</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Specialized Training Section -->
+          <div class="rounded-2xl border-2 border-blue-200 bg-gradient-to-br from-blue-50 to-white p-8 shadow-lg">
+            <div class="flex items-center gap-3 mb-6">
+              <div class="p-2 rounded-xl bg-blue-600">
+                <i class="lucide lucide-target w-6 h-6 text-white"></i>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold text-slate-900" style="color: var(--text-primary);">Specialized Training</h3>
+                <p class="text-slate-600 text-sm" style="color: var(--text-secondary);">Focused modules for immediate application</p>
+              </div>
+            </div>
+            <div class="grid md:grid-cols-3 gap-6">
+              <div class="bg-white rounded-xl p-6 border border-blue-100 shadow-sm hover-lift" style="background: var(--bg-secondary); border-color: var(--border-color);">
+                <div class="flex items-center gap-2 mb-3">
+                  <i class="lucide lucide-file-text w-5 h-5 text-green-600"></i>
+                  <span class="px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">Completed</span>
+                </div>
+                <h4 class="font-semibold text-slate-900 mb-2" style="color: var(--text-primary);">Letters of Credit (UCP600)</h4>
+                <p class="text-slate-600 text-sm" style="color: var(--text-secondary);">Trade finance fundamentals and documentation flow</p>
+              </div>
+              
+              <div class="bg-white rounded-xl p-6 border border-blue-100 shadow-sm hover-lift" style="background: var(--bg-secondary); border-color: var(--border-color);">
+                <div class="flex items-center gap-2 mb-3">
+                  <i class="lucide lucide-ship w-5 h-5 text-blue-600"></i>
+                  <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs font-medium rounded-full">Practicing</span>
+                </div>
+                <h4 class="font-semibold text-slate-900 mb-2" style="color: var(--text-primary);">Bills of Lading & Documentation</h4>
+                <p class="text-slate-600 text-sm" style="color: var(--text-secondary);">Clean vs. claused B/L, document flow mastery</p>
+              </div>
+              
+              <div class="bg-white rounded-xl p-6 border border-blue-100 shadow-sm hover-lift" style="background: var(--bg-secondary); border-color: var(--border-color);">
+                <div class="flex items-center gap-2 mb-3">
+                  <i class="lucide lucide-clock w-5 h-5 text-orange-600"></i>
+                  <span class="px-2 py-1 bg-orange-100 text-orange-800 text-xs font-medium rounded-full">Next Up</span>
+                </div>
+                <h4 class="font-semibold text-slate-900 mb-2" style="color: var(--text-primary);">Laytime & Demurrage</h4>
+                <p class="text-slate-600 text-sm" style="color: var(--text-secondary);">Vessel operations and time-based risk management</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Certifications -->
+    <section id="certifications" class="py-20 scroll-mt-24 fade-in">
+      <div class="max-w-6xl mx-auto px-6">
+        <h2 class="text-3xl md:text-4xl font-bold tracking-tight" style="color: var(--text-primary);">Certifications & Courses I've Taken Recently</h2>
+        <p class="mt-2 text-slate-600 max-w-3xl" style="color: var(--text-secondary);">Fresh, practical training that supports logistics, documentation, and risk.</p>
+        <div class="mt-8 grid md:grid-cols-3 gap-6">
+          <div class="rounded-2xl border p-6 bg-white shadow-sm hover-lift" style="background: var(--bg-secondary); border-color: var(--border-color);">
+            <h4 class="font-semibold flex items-center gap-2" style="color: var(--text-primary);"><i class="lucide lucide-award w-5 h-5"></i> Trade & Logistics</h4>
+            <ul class="mt-3 text-slate-700 space-y-2 text-sm" style="color: var(--text-secondary);">
+              <li>ICC Incoterms® 2020 Certificate (in progress)</li>
+              <li>Letters of Credit (UCP600) — fundamentals</li>
+              <li>Bills of Lading — clean vs. claused, doc flow</li>
+            </ul>
+          </div>
+          <div class="rounded-2xl border p-6 bg-white shadow-sm hover-lift" style="background: var(--bg-secondary); border-color: var(--border-color);">
+            <h4 class="font-semibold flex items-center gap-2" style="color: var(--text-primary);"><i class="lucide lucide-award w-5 h-5"></i> Risk & Markets</h4>
+            <ul class="mt-3 text-slate-700 space-y-2 text-sm" style="color: var(--text-secondary);">
+              <li>CME Group — Position & Risk Management</li>
+              <li>CFI — Commodities Fundamentals (select modules)</li>
+              <li>Laytime & Demurrage — core principles</li>
+            </ul>
+          </div>
+          <div class="rounded-2xl border p-6 bg-white shadow-sm hover-lift" style="background: var(--bg-secondary); border-color: var(--border-color);">
+            <h4 class="font-semibold flex items-center gap-2" style="color: var(--text-primary);"><i class="lucide lucide-award w-5 h-5"></i> Docs & Execution</h4>
+            <ul class="mt-3 text-slate-700 space-y-2 text-sm" style="color: var(--text-secondary);">
+              <li>Export doc pack drills: CI, PL, B/L, insurance note</li>
+              <li>Booking → cut-offs → VGM → customs/AES</li>
+              <li>Bulk & container flow — ops basics</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Added beautiful footer section -->
+    <footer id="contact" class="bg-slate-900 text-white">
+      <div class="max-w-6xl mx-auto px-6 py-16">
+        <div class="grid md:grid-cols-2 gap-12 items-center">
+          <div>
+            <h2 class="text-3xl md:text-4xl font-bold tracking-tight">Let's Connect</h2>
+            <p class="mt-4 text-slate-300 text-lg">
+              Ready to discuss opportunities in ag & forestry trading, logistics coordination, or desk support roles.
+            </p>
+            <div class="mt-6 space-y-3">
+              <div class="flex items-center gap-3">
+                <i class="lucide lucide-mail w-5 h-5 text-emerald-400"></i>
+                <a href="mailto:jonathan@example.com" class="text-slate-300 hover:text-white transition-colors duration-200">jonathan@example.com</a>
+              </div>
+              <div class="flex items-center gap-3">
+                <i class="lucide lucide-phone w-5 h-5 text-emerald-400"></i>
+                <a href="tel:+1234567890" class="text-slate-300 hover:text-white transition-colors duration-200">(123) 456-7890</a>
+              </div>
+              <div class="flex items-center gap-3">
+                <i class="lucide lucide-map-pin w-5 h-5 text-emerald-400"></i>
+                <span class="text-slate-300">Tennessee → Washington (visiting)</span>
+              </div>
+            </div>
+          </div>
+          <div class="space-y-6">
+            <div class="grid grid-cols-2 gap-4">
+              <a href="https://linkedin.com/in/jonathandavis" target="_blank" class="flex items-center gap-3 p-4 rounded-xl border border-slate-700 hover:border-slate-600 hover:bg-slate-800 transition-all duration-200">
+                <i class="lucide lucide-linkedin w-6 h-6 text-blue-400"></i>
+                <div>
+                  <div class="font-semibold">LinkedIn</div>
+                  <div class="text-sm text-slate-400">Professional profile</div>
+                </div>
+              </a>
+              <a href="/Jonathan_Davis_Resume.pdf" target="_blank" class="flex items-center gap-3 p-4 rounded-xl border border-slate-700 hover:border-slate-600 hover:bg-slate-800 transition-all duration-200">
+                <i class="lucide lucide-file-down w-6 h-6 text-emerald-400"></i>
+                <div>
+                  <div class="font-semibold">Resume</div>
+                  <div class="text-sm text-slate-400">Download PDF</div>
+                </div>
+              </a>
+            </div>
+            <div class="rounded-xl border border-slate-700 p-6 bg-slate-800/50">
+              <h4 class="font-semibold mb-3">Quick Response Promise</h4>
+              <p class="text-slate-300 text-sm">
+                I respond to all inquiries within 24 hours. Currently prioritizing Washington-based opportunities in ag/forestry trading and logistics.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="mt-12 pt-8 border-t border-slate-700 flex flex-col md:flex-row justify-between items-center gap-4">
+          <div class="flex items-center gap-4">
+            <span class="font-bold text-lg">Jonathan Davis</span>
+            <span class="text-slate-400">•</span>
+            <span class="text-slate-400">Commodity Trading Professional</span>
+          </div>
+          <div class="flex items-center gap-6 text-sm text-slate-400">
+            <span>© 2024 Jonathan Davis</span>
+            <span class="text-slate-400">•</span>
+            <span>Built for opportunity</span>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Enhanced JavaScript with scroll animations, dark mode, and skill bar animations -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const line1 = document.getElementById('line1');
+        const line2 = document.getElementById('line2');
+        const line3 = document.getElementById('line3');
+        let isMenuOpen = false;
+
+        mobileMenuButton.addEventListener('click', function() {
+          isMenuOpen = !isMenuOpen;
+          
+          if (isMenuOpen) {
+            mobileMenu.style.maxHeight = mobileMenu.scrollHeight + 'px';
+            line1.style.transform = 'rotate(45deg) translate(6px, 6px)';
+            line2.style.opacity = '0';
+            line3.style.transform = 'rotate(-45deg) translate(6px, -6px)';
+          } else {
+            mobileMenu.style.maxHeight = '0px';
+            line1.style.transform = 'rotate(0) translate(0, 0)';
+            line2.style.opacity = '1';
+            line3.style.transform = 'rotate(0) translate(0, 0)';
+          }
+        });
+
+        const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+        mobileMenuLinks.forEach(link => {
+          link.addEventListener('click', function() {
+            isMenuOpen = false;
+            mobileMenu.style.maxHeight = '0px';
+            line1.style.transform = 'rotate(0) translate(0, 0)';
+            line2.style.opacity = '1';
+            line3.style.transform = 'rotate(0) translate(0, 0)';
+          });
+        });
+
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const body = document.body;
+        
+        // Check for saved theme preference or default to light mode
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        body.setAttribute('data-theme', currentTheme);
+        updateThemeIcon(currentTheme);
+        
+        themeToggle.addEventListener('click', function() {
+          const currentTheme = body.getAttribute('data-theme');
+          const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+          
+          body.setAttribute('data-theme', newTheme);
+          localStorage.setItem('theme', newTheme);
+          updateThemeIcon(newTheme);
+        });
+        
+        function updateThemeIcon(theme) {
+          if (theme === 'dark') {
+            themeIcon.className = 'lucide lucide-moon w-5 h-5';
+          } else {
+            themeIcon.className = 'lucide lucide-sun w-5 h-5';
+          }
+        }
+
+        const observerOptions = {
+          threshold: 0.1,
+          rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              
+              if (entry.target.id === 'skills') {
+                setTimeout(() => {
+                  const skillBars = entry.target.querySelectorAll('.skill-bar');
+                  skillBars.forEach(bar => {
+                    bar.classList.add('animate');
+                  });
+                }, 300);
+              }
+            }
+          });
+        }, observerOptions);
+
+        // Observe all fade-in elements
+        const fadeElements = document.querySelectorAll('.fade-in');
+        fadeElements.forEach(el => observer.observe(el));
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+          anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+              target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+              });
+            }
+          });
+        });
+
+        window.addEventListener('scroll', function() {
+          const scrolled = window.pageYOffset;
+          const parallaxElements = document.querySelectorAll('.float, .float-delayed');
+          
+          parallaxElements.forEach(element => {
+            const speed = 0.5;
+            const yPos = -(scrolled * speed);
+            element.style.transform = `translateY(${yPos}px)`;
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
